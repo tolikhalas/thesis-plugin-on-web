@@ -1,0 +1,24 @@
+.icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 30px;
+    right: 5px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.icon.icon-success {
+    stroke: green;
+}
+
+.icon.icon-error {
+    stroke: red;
+}
+.error-message {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
