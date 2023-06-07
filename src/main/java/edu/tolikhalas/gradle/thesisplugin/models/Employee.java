@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -19,9 +21,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstName;
+    private String firstname;
 
-    private String lastName;
+    private String lastname;
 
     private Position position;
 
@@ -29,27 +31,44 @@ public class Employee {
 
     private String email;
 
-    public Employee(String firstName, String lastName, Position position, LocalDate dob) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Employee(String firstname, String lastname, Position position, LocalDate dob) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.position = position;
         this.dob = dob;
     }
 
-    public Employee(String firstName, String lastName, Position position, LocalDate dob, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Employee(String firstname, String lastname, Position position, LocalDate dob, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.position = position;
         this.dob = dob;
         this.email = email;
     }
 
-    public Employee(Long id, String firstName, String lastName, Position position, LocalDate dob, String email) {
+    public Employee(Long id, String firstname, String lastname, Position position, LocalDate dob, String email) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.position = position;
         this.dob = dob;
         this.email = email;
+    }
+
+    public void setPosition(String code) {
+        this.position = Position.fromCode(code);
+    }
+
+    public void setDob(String datetime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        this.dob = LocalDate.parse(datetime, formatter);
+    }
+
+    public void setEmail(String email) {
+        if (email.equals("")) {
+            this.email = null;
+        } else {
+            this.email = email;
+        }
     }
 }

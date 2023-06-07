@@ -3,6 +3,10 @@
 <head>
     <th:block th:insert="~{base :: head}"></th:block>
     <title>Employee App</title>
+
+    <!--  Validation import  -->
+    <th:block th:insert="~{import :: jquery}"></th:block>
+    <th:block th:insert="~{import :: validation}"></th:block>
 </head>
 <body>
 
@@ -18,8 +22,8 @@
         </thead>
         <tbody>
         <tr th:each="employee: ${employees}">
-            <td th:text="${employee.getFirstName()}"></td>
-            <td th:text="${employee.getLastName()}"></td>
+            <td th:text="${employee.getFirstname()}"></td>
+            <td th:text="${employee.getLastname()}"></td>
             <td th:text="${employee.getPosition().name().toLowerCase()}"></td>
             <td th:text="${employee.getDob()}"></td>
             <td
@@ -28,51 +32,42 @@
         </tbody>
     </table>
 
-    <form action="" method="post"
-          class="row justify-content-center gap-4 px-2 py-4 mx-2 border border-2 rounded-3">
+    <form action="" method="POST"
+          class="row justify-content-center gap-4 px-2 py-4 mx-2 border border-2 rounded-3" id="employee_form">
         <legend class="text-center">Добавити працівника</legend>
         <div class="firstname input-group">
             <span class="input-group-text">Введіть ім'я</span>
-            <input class="form-control" type="text" name="firstname" id="firstname" 
-                   placeholder="John">
-            <span class="error-message"></span>
-            <svg class="icon icon-success hidden" xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>check-circle</title><g fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
-            <svg class="icon icon-error hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>exclamation-circle</title><g fill="none"><path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+            <input class="form-control" type="text" name="firstname" id="firstname" placeholder="John" required minlength="2">
         </div>
         <div class="lastname input-group">
             <span class="input-group-text">Введіть прізвище</span>
-            <input class="form-control" type="text" name="lastname" id="lastname"
-                   placeholder="Doe">
-            <span class="error-message"></span>
-            <svg class="icon icon-success hidden" xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>check-circle</title><g fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
-            <svg class="icon icon-error hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>exclamation-circle</title><g fill="none"><path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+            <input class="form-control" type="text" name="lastname"
+                   id="lastname" placeholder="Doe" required minlength="2">
 
         </div>
         <div class="position input-group">
             <span class="input-group-text">Оберіть посаду</span>
-            <select class="form-select">
+            <select class="form-select" name="position" id="position" required>
                 <option value="developer">Developer</option>
                 <option value="designer">Designer</option>
                 <option value="manager">Manager</option>
                 <option value="devops">DevOps</option>
                 <option value="hr">HR</option>
             </select>
-            <span class="error-message"></span>
-            <svg class="icon icon-success hidden" xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>check-circle</title><g fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
-            <svg class="icon icon-error hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>exclamation-circle</title><g fill="none"><path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
         </div>
         <div class="dob input-group">
             <span class="input-group-text">Ваша дата народження</span>
-            <input class="form-control" type="date" name="dob" id="dob">
+            <input class="form-control" type="date" name="dob" id="dob" required>
         </div>
         <div class="email input-group">
             <span class="input-group-text">Введіть вашу пошту</span>
             <input class="form-control" type="email" name="email" id="email"
                    placeholder="johndoe@email.com">
-            <span class="error-message"></span>
-            <svg class="icon icon-success hidden" xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>check-circle</title><g fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
-            <svg class="icon icon-error hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>exclamation-circle</title><g fill="none"><path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
         </div>
+<!--        <div class="input-group">-->
+<!--            <button class="btn btn-primary form-control"-->
+<!--                    id="show_json">Show json</button>-->
+<!--        </div>-->
         <div class="input-group">
             <input class="btn btn-outline-primary form-control" type="submit"
                    value="Добавити працівника">
@@ -80,6 +75,10 @@
     </form>
 
 </div>
+
+<!--  Scripts   -->
+<!--    Sending data to server    -->
+<script th:src="@{js/index.js}"></script>
 
 </body>
 </html>
