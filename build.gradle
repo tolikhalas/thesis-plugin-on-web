@@ -1,7 +1,17 @@
 plugins {
     id 'java'
+    id 'java-gradle-plugin'
     id 'org.springframework.boot' version '3.1.0'
     id 'io.spring.dependency-management' version '1.1.0'
+}
+
+gradlePlugin {
+    plugins {
+        testPlugin {
+            id = 'edu.tolikhalas.thesis-plugin'
+            implementationClass = 'edu.tolikhalas.gradle.thesisplugin.plugin.TestPlugin'
+        }
+    }
 }
 
 group = 'edu.tolikhalas.gradle'
@@ -23,12 +33,41 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
+
+    implementation gradleApi()
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation 'commons-codec:commons-codec:1.15'
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.register('calculateMd5') {
+    inputs.dir 'src/main/resources/static'
+    outputs.dir 'build/hashsum'
+
+    doLast {
+        fileTree('src/main/resources/static').visit { FileVisitDetails details ->
+            if (!details.file.isDirectory()) {
+                def relativePath = details.relativePath
+                def inputFile = details.file
+                def outputFile = new File('build/hashsum', "${relativePath}.md5")
+
+                if (!outputFile.exists() || inputFile.lastModified() > outputFile.lastModified()) {
+                    outputFile.parentFile.mkdirs()
+                    outputFile.text = DigestUtils.md5Hex(inputFile.bytes)
+                }
+            }
+        }
+    }
 }
